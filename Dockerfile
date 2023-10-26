@@ -2,14 +2,15 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5184
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["TranslationManagement.Api/TranslationManagement.Api.csproj", "TranslationManagement.Api/"]
-RUN dotnet restore "TranslationManagement.Api/TranslationManagement.Api.csproj"
+COPY ["External.ThirdParty.Services/External.ThirdParty.Services.csproj", "External.ThirdParty.Services/"]
+COPY ["TM.Api/TranslationManagement.Api.csproj", "TM.Api/"]
+RUN dotnet restore "TM.Api/TranslationManagement.Api.csproj"
+WORKDIR "/src/TM.Api"
 COPY . .
-WORKDIR "/src/TranslationManagement.Api"
 RUN dotnet build "TranslationManagement.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
