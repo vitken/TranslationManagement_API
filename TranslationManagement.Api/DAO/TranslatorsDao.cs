@@ -30,6 +30,11 @@ namespace TranslationManagement.Api.DAO
             return _context.Translators.ToList(); ;
         }
 
+        public TranslatorModel GetTranslatorById(int translatorId)
+        {
+            return _context.Translators.FirstOrDefault(x => x.Id == translatorId);
+        }
+
         public List<TranslatorModel> GetTranslatorsByName(string name)
         {
             return _context.Translators.Where(x => x.Name.ToLowerInvariant().Contains(name.ToLowerInvariant())).ToList();

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics;
+using static TranslationManagement.Api.Utils.CommonUtils;
 
 namespace TranslationManagement.Api.Migrations
 {
@@ -13,7 +15,7 @@ namespace TranslationManagement.Api.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CustomerName = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: true),
+                    Status = table.Column<JobStatus>(type: "INTEGER", nullable: true),
                     OriginalContent = table.Column<string>(type: "TEXT", nullable: true),
                     TranslatedContent = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<double>(type: "REAL", nullable: false)
@@ -31,7 +33,7 @@ namespace TranslationManagement.Api.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     HourlyRate = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<string>(type: "INTEGER", nullable: true),
+                    Status = table.Column<TranslatorStatus>(type: "INTEGER", nullable: true),
                     CreditCardNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -43,10 +45,10 @@ namespace TranslationManagement.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TranslationJobs");
+                name: "TranslationJobs_tbl");
 
             migrationBuilder.DropTable(
-                name: "Translators");
+                name: "Translators_tbl");
         }
     }
 }

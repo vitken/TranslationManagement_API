@@ -21,6 +21,13 @@ namespace TranslationManagement.Api.DAO
         List<TranslatorModel> GetTranslatorsByName(string name);
 
         /// <summary>
+        /// Retrieves translator by given id
+        /// </summary>
+        /// <param name="translatorId"></param>
+        /// <returns>Translator if exists</returns>
+        TranslatorModel GetTranslatorById(int translatorId);
+
+        /// <summary>
         /// Creates new translator with a given parameter
         /// </summary>
         /// <param name="translator"></param>
