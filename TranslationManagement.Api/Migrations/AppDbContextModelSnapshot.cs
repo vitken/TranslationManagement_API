@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TranslationManagement.Api;
+using static TranslationManagement.Api.Utils.CommonUtils;
 
 namespace TranslationManagement.Api.Migrations
 {
@@ -15,7 +16,7 @@ namespace TranslationManagement.Api.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("TranslationManagement.Api.Controlers.TranslatorManagementController+TranslatorModel", b =>
+            modelBuilder.Entity("TranslationManagement.Api.Models.TranslatorModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,15 +31,15 @@ namespace TranslationManagement.Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("TEXT");
+                    b.Property<TranslatorStatus>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Translators");
+                    b.ToTable("Translators_tbl");
                 });
 
-            modelBuilder.Entity("TranslationManagement.Api.Controllers.TranslationJobController+TranslationJob", b =>
+            modelBuilder.Entity("TranslationManagement.Api.Models.TranslationJobModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,15 +54,15 @@ namespace TranslationManagement.Api.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("TEXT");
+                    b.Property<JobStatus>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("TranslatedContent")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TranslationJobs");
+                    b.ToTable("TranslationJobs_tbl");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using TranslationManagement.Api.DAO;
 
 namespace TranslationManagement.Api
 {
@@ -26,6 +27,8 @@ namespace TranslationManagement.Api
 
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlite("Data Source=TranslationAppDatabase.db"));
+
+            services.AddScoped<ITranslatorsDao, TranslatorsDao>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TranslationManagement.Api.DAO;
 using TranslationManagement.Api.Models;
+using static TranslationManagement.Api.Utils.CommonUtils;
 
 namespace TranslationManagement.Api.Controllers
 {
@@ -11,50 +14,48 @@ namespace TranslationManagement.Api.Controllers
     [Route("api/TranslatorsManagement/[action]")]
     public class TranslatorManagementController : ControllerBase
     {
-        public static readonly string[] TranslatorStatuses = { "Applicant", "Certified", "Deleted" };
-
         private readonly ILogger<TranslatorManagementController> _logger;
-        private AppDbContext _context;
+        private readonly ITranslatorsDao _translatorsDao;
 
-        public TranslatorManagementController(IServiceScopeFactory scopeFactory, ILogger<TranslatorManagementController> logger)
+        public TranslatorManagementController(ITranslatorsDao translatorsDao, ILogger<TranslatorManagementController> logger)
         {
-            _context = scopeFactory.CreateScope().ServiceProvider.GetService<AppDbContext>();
+            _translatorsDao = translatorsDao;
             _logger = logger;
         }
 
         [HttpGet]
-        public TranslatorModel[] GetTranslators()
+        public List<TranslatorModel> GetTranslators()
         {
-            return _context.Translators.ToArray();
+            return _translatorsDao.GetAllTranslators();
         }
 
         [HttpGet]
-        public TranslatorModel[] GetTranslatorsByName(string name)
+        public List<TranslatorModel> GetTranslatorsByName(string name)
         {
-            return _context.Translators.Where(t => t.Name == name).ToArray();
+            return _translatorsDao.GetTranslatorsByName(name);
         }
 
         [HttpPost]
-        public bool AddTranslator(TranslatorModel translator)
+        public TranslatorModel AddTranslator(TranslatorModel translator)
         {
-            _context.Translators.Add(translator);
-            return _context.SaveChanges() > 0;
+            return _translatorsDao.CreateTranslator(translator);
         }
         
         [HttpPost]
-        public string UpdateTranslatorStatus(int Translator, string newStatus = "")
+        public IActionResult UpdateTranslatorStatus(int translatorId, TranslatorStatus newStatus)
         {
-            _logger.LogInformation("User status update request: " + newStatus + " for user " + Translator.ToString());
-            if (TranslatorStatuses.Where(status => status == newStatus).Count() == 0)
+            _logger.LogInformation($"User status update request: {Enum.GetName(typeof(TranslatorStatus), newStatus)} for user {translatorId}");
+            try
             {
-                throw new ArgumentException("unknown status");
+                _translatorsDao.UpdateTranslatorStatus(translatorId, newStatus);
             }
-
-            var job = _context.Translators.Single(j => j.Id == Translator);
-            job.Status = newStatus;
-            _context.SaveChanges();
-
-            return "updated";
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return NotFound($"Translator with id {translatorId} not found!");
+            }
+            
+            return Ok();
         }
     }
 }

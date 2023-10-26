@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TranslationManagement.Api.Models;
+using static TranslationManagement.Api.Utils.CommonUtils;
 
 namespace TranslationManagement.Api.Controllers
 {
@@ -15,13 +17,6 @@ namespace TranslationManagement.Api.Controllers
     [Route("api/jobs/[action]")]
     public class TranslationJobController : ControllerBase
     {
-        static class JobStatuses
-        {
-            internal static readonly string New = "New";
-            internal static readonly string Inprogress = "InProgress";
-            internal static readonly string Completed = "Completed";
-        }
-
         private AppDbContext _context;
         private readonly ILogger<TranslatorManagementController> _logger;
 
@@ -37,7 +32,6 @@ namespace TranslationManagement.Api.Controllers
             return _context.TranslationJobs.ToArray();
         }
 
-        const double PricePerCharacter = 0.01;
         private void SetPrice(TranslationJob job)
         {
             job.Price = job.OriginalContent.Length * PricePerCharacter;
