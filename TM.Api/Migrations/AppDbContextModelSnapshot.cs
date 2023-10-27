@@ -25,8 +25,8 @@ namespace TranslationManagement.Api.Migrations
                     b.Property<string>("CreditCardNumber")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HourlyRate")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("HourlyRate")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
@@ -36,7 +36,7 @@ namespace TranslationManagement.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Translators_tbl");
+                    b.ToTable("Translators");
                 });
 
             modelBuilder.Entity("TranslationManagement.Api.Models.TranslationJobModel", b =>
@@ -62,7 +62,7 @@ namespace TranslationManagement.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TranslationJobs_tbl");
+                    b.ToTable("TranslationJobs");
                 });
 #pragma warning restore 612, 618
         }

@@ -29,14 +29,9 @@ namespace TranslationManagement.Api.Controllers
         }
 
         [HttpGet]
-        public TranslationJobModel GetJobs()
+        public List<TranslationJobModel> GetJobs()
         {
-            //return _translationJobManager.GetJobs();
-            return new TranslationJobModel()
-            {
-                CustomerName = "Viktor",
-                Status = JobStatus.Inprogress
-            };
+            return _translationJobManager.GetJobs();
         }
 
         [HttpPost]

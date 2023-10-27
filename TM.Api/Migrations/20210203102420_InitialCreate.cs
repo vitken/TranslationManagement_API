@@ -9,7 +9,7 @@ namespace TranslationManagement.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TranslationJobs_tbl",
+                name: "TranslationJobs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -26,13 +26,13 @@ namespace TranslationManagement.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Translators_tbl",
+                name: "Translators",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    HourlyRate = table.Column<string>(type: "TEXT", nullable: true),
+                    HourlyRate = table.Column<double>(type: "REAL", nullable: true),
                     Status = table.Column<TranslatorStatus>(type: "INTEGER", nullable: true),
                     CreditCardNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -45,10 +45,10 @@ namespace TranslationManagement.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TranslationJobs_tbl");
+                name: "TranslationJobs");
 
             migrationBuilder.DropTable(
-                name: "Translators_tbl");
+                name: "Translators");
         }
     }
 }
